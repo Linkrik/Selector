@@ -1,0 +1,313 @@
+﻿<Window x:Class="Selector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Selector"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Selector" Height="550" Width="400"
+        ResizeMode="NoResize" 
+        WindowStyle="None" 
+        >
+    <!--*************************************************************Resources*********************************************************************-->
+    <Window.Resources>
+        
+        <!-- Стиль Бордеров разграничивающих отделы Порт и Канал -->
+        <Style x:Key="BorderDarkGradStyle" >
+            <Setter Property="Border.Margin"                        Value="10"/>
+            <Setter Property="Border.CornerRadius"                  Value="15"/>
+            <Setter Property="Border.Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF071538" Offset="1"/>
+                        <GradientStop Color="#FF071538" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль Лейбелов заголовков -->
+        <Style x:Key="LabelHeaderStyle">
+            <Setter Property="Label.HorizontalAlignment" Value="Center"/>
+            <Setter Property="Label.VerticalAlignment" Value="Center"/>
+            <Setter Property="Label.Foreground" Value="#FFA16CC5"/>
+            <Setter Property="Label.FontSize" Value="30"/>
+            <Setter Property="Label.FontFamily" Value="Ebrima"/>
+        </Style>
+
+        <!-- Стиль TextBlock основного текста -->
+        <Style x:Key="TextBlockPlainStyle">
+            <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+            <Setter Property="TextBlock.Foreground" Value="#FFA16CC5"/>
+            <Setter Property="TextBlock.FontSize" Value="20"/>
+            <Setter Property="TextBlock.FontFamily" Value="Ebrima"/>
+        </Style>
+
+        <!-- Стиль ListViewItem -->
+        <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            
+            <Setter Property="ListViewItem.Foreground" Value="#FFA06CC5"/>
+            <Setter Property="ListViewItem.FontSize" Value="20"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border Background="{TemplateBinding Background}" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="#FF3B265C"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="#FF3B265C"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <!-- Стиль ToggleButton -->
+        <Style x:Key="OnOffToggleStyle" TargetType="ToggleButton">
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="{TemplateBinding Background}" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+
+                
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            Закрыть
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="#FF381A4F"></Setter>
+                </Trigger>
+                
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                             Открыть
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="#FF3B265C"></Setter>
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF381A4F"></Setter>
+                </Trigger>
+                
+            </Style.Triggers>
+        </Style>
+
+
+
+        <!-- Стиль Button Close-->
+        <Style TargetType="{x:Type Button}" x:Key="btnCloseStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Border Padding="10">
+                        <Path  HorizontalAlignment="Center" Fill="White" Stretch="Uniform">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <StaticResource  ResourceKey="close"/>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                    </Border>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF381A4F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Стиль Button Minimize -->
+        <Style TargetType="{x:Type Button}" x:Key="btnMinimizeStyle">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Border Padding="10,17,10,17">
+                        <Path  HorizontalAlignment="Center" Fill="White" Stretch="Fill">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <StaticResource  ResourceKey="minimize"/>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                    </Border>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" >
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF381A4F"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+    </Window.Resources>
+<!--***************************************************************************************************************************************************-->
+    
+    
+
+    <Grid x:Name="mainGrid">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <LinearGradientBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                        <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                        <RotateTransform Angle="0" CenterY="0.5" CenterX="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </LinearGradientBrush.RelativeTransform>
+                <GradientStop Color="#FF502A6A"/>
+                <GradientStop Color="#FF1F214B" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="65"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Border Grid.ColumnSpan="2" Grid.RowSpan="3" Background="Transparent" BorderBrush="Black" BorderThickness="2"></Border>
+        
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" Margin="0,2,2,0">
+
+            <Button x:Name="btnMinimize" Width="35" Height="35"  Style="{StaticResource btnMinimizeStyle}"/>
+
+            <Button x:Name="btnClose" Width="35"  Style="{StaticResource btnCloseStyle}"/>
+
+        </StackPanel>
+        
+        <Border Grid.Row="1" Grid.RowSpan="2" Style="{StaticResource BorderDarkGradStyle}"/>
+        <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource BorderDarkGradStyle}"/>
+
+        <Label Grid.Column="0" Grid.Row="1" Content="Порт" Style="{StaticResource LabelHeaderStyle}" />
+        <Label Grid.Column="1" Grid.Row="1" Content="Канал" Style="{StaticResource LabelHeaderStyle}" />
+
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="7*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Height="35"  Margin="8,0,8,0" HorizontalAlignment="Center">
+                <Label  Style="{StaticResource TextBlockPlainStyle}" >
+                    <TextBlock  >Питание SHDN</TextBlock>
+                </Label>
+                <CheckBox  x:Name="checkBoxShdnPower" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <CheckBox.LayoutTransform>
+                        <ScaleTransform ScaleX="2" ScaleY="2" />
+                    </CheckBox.LayoutTransform>
+                </CheckBox>
+            </StackPanel>
+
+            <ListView x:Name="lstvwChanal" Grid.Row="2" Margin="8,0,8,10" Background="Transparent"
+                  BorderBrush="Transparent" ItemContainerStyle="{StaticResource ListViewItemStyle}">
+
+                <ListViewItem Height="30" Content="1    0,01-0,2    ГГц" IsSelected ="True"></ListViewItem>
+                <ListViewItem Height="30" Content="2    0,2-0,3      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="3    0,3-0,6      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="4    0,6-1,0      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="5    1,0-1,4      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="6    1,4-1,8      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="7    1,8-2,4      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="8    2,4-3,4      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="9    3,4-5,4      ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="10  5,4-8         ГГц"></ListViewItem>
+                <ListViewItem Height="30" Content="11  8-12,6       ГГц" ></ListViewItem>
+                <ListViewItem Height="30" Content="12  12,6-21     ГГц"  ></ListViewItem>
+
+            </ListView>
+
+        </Grid>
+        
+
+        
+        <!-- Grid Port -->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ComboBox Name="cbComPorts" Grid.Row="0" Width="180" Height="40" FontSize="25" ></ComboBox>
+
+            <ToggleButton Name="tbComPortConnection" Grid.Row="1" Width="180" Height="40" FontSize="25"
+                           Foreground="White" Style="{StaticResource OnOffToggleStyle}" ></ToggleButton>
+            
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <TextBlock   Style="{StaticResource TextBlockPlainStyle}" Width="135"> Статус <LineBreak></LineBreak> подключения:</TextBlock>
+                
+                <Border Height="35" Width="35" Padding="5">
+
+                    <Path Name="pathStatusConnection"  HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#FFFF2E00" Stretch="Uniform">
+                        <Path.Data>
+                            <GeometryGroup x:Name="statusConnection">
+                                <StaticResource  ResourceKey="cancel"/>
+                            </GeometryGroup>
+                        </Path.Data>
+                    </Path>
+                   
+                </Border>
+            
+            </StackPanel>
+
+            
+            
+
+        </Grid>
+    </Grid>
+
+</Window>
